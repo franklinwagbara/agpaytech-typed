@@ -1,37 +1,49 @@
-import { Country } from "../../dto";
+import { Model } from "mongoose";
+import { ICountry, IQuery } from "../../interfaces";
 import { IService, IResult } from "../../interfaces";
+import { CountryModel } from "../../models";
+import { getCountries, saveCountries } from "../../helpers";
 
-export class CountriesService implements IService<Country> {
-  getSingle(id: number): Promise<IResult<Country>> {
-    const result: IResult<Country> = {
+export class CountriesService implements IService<ICountry> {
+  private readonly _Model: Model<ICountry>;
+
+  constructor(Model: Model<ICountry>){
+    this._Model = Model;
+  }
+
+  getSingle(id: number): Promise<IResult<ICountry>> {
+    const result: IResult<ICountry> = {
       data: null,
       error: null,
     };
 
-    return Promise<IResult<Country>>.resolve(result);
+    return Promise<IResult<ICountry>>.resolve(result);
   }
-  getAll(): Promise<IResult<Country>[]> {
-    const result: IResult<Country>[] = [{
-      data: new Country(1, "Nigeria"),
-      error: null,
-    }];
+  async getAll(page: number, size: number, query: IQuery): Promise<IResult<ICountry>> {
+    return getCountries(this._Model, page, size, query);
+  }
+  search(data: ICountry): Promise<IResult<ICountry>> {
+    throw new Error("Method not implemented.");
+  }
 
-    return Promise<IResult<Country>[]>.resolve(result);
+  saveCountry(data: ICountry): Promise<IResult<ICountry>>{
+    const result: IResult<ICountry> = {
+      data: null,
+      error: null,
+    };
+    return Promise<IResult<ICountry>>.resolve(result);
   }
-  search(data: Country): Promise<IResult<Country>[]> {
+
+  saveCountries(data: ICountry[]): Promise<IResult<ICountry>>{
+    return saveCountries(data, this._Model);
+  }
+
+  update(data: ICountry): Promise<IResult<ICountry>> {
     throw new Error("Method not implemented.");
   }
-  save(datum: Country): Promise<IResult<Country>>;
-  save(data: Country[]): Promise<IResult<Country>>;
-  save(data: unknown): Promise<IResult<Country>> {
-    throw new Error("Method not implemented.");
-  }
-  update(data: Country): Promise<IResult<Country>> {
-    throw new Error("Method not implemented.");
-  }
-  delete(id: number): Promise<IResult<Country>> {
+  delete(id: number): Promise<IResult<ICountry>> {
     throw new Error("Method not implemented.");
   }
 }
 
-export default new CountriesService();
+export default new CountriesService(CountryModel);

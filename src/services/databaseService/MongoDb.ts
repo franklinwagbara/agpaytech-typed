@@ -16,30 +16,4 @@ export default class MongoDb implements IDatabase<object> {
   disconnect(): Promise<IResult<object>> {
     throw new Error("Method not implemented.");
   }
-
-  getSingle(id: number): Promise<IResult<object>> {
-    throw new Error("Method not implemented.");
-  }
-
-  getAll(): Promise<IResult<object>[]> {
-    throw new Error("Method not implemented.");
-  }
-
-  search(data: object): Promise<IResult<object>[]> {
-    throw new Error("Method not implemented.");
-  }
-
-  save(datum: object): Promise<IResult<object>>;
-  save(data: object[]): Promise<IResult<object>>;
-  save(data: unknown): Promise<IResult<object>> {
-    throw new Error("Method not implemented.");
-  }
-
-  update(data: object): Promise<IResult<object>> {
-    throw new Error("Method not implemented.");
-  }
-
-  delete(id: number): Promise<IResult<object>> {
-    throw new Error("Method not implemented.");
-  }
 }

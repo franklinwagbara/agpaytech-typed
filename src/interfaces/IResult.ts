@@ -1,4 +1,4 @@
 export interface IResult<T> {
-  data: T | null;
+  data: T | T[] | object | null;
   error: string | null;
 }
