@@ -12,12 +12,11 @@ export const saveCountries = async function (
   model: Model<ICountry>
 ): Promise<IResult<ICountry>> {
   try {
-    console.log("insert Many");
     await model.insertMany(countries);
     result.data = {success: "ok"};
     return Promise<IResult<ICountry>>.resolve(result);
   } catch (error) {
-    return parseError(error);
+    return parseError(error) as IResult<ICountry>;
   }
 };
 

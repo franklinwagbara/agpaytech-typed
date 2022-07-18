@@ -1,34 +1,28 @@
 import { Request, Response } from "express";
-import { IService, IResult, ICountry, IQuery } from "../interfaces";
-import { countriesService } from "../services";
+import { IService, IResult, ICurrency, IQuery } from "../interfaces";
+import { currenciesService } from "../services";
 import { base_dir } from "../../base_dir";
 import { parseCSV, parseError, saveFile } from "../helpers";
 import fileUpload from "express-fileupload";
 import _ from "lodash";
 
-const Service: IService<ICountry> = countriesService;
+const Service: IService<ICurrency> = currenciesService;
 
-export class CountriesController {
-  async get_countries(req: Request, res: Response) {
+export class CurrenciesController {
+  async get_currencies(req: Request, res: Response) {
     //todo: implement validation
     const page: number | undefined = parseInt(req.query.page as string);
     const size: number | undefined = parseInt(req.query.size as string);
     const query: IQuery = {
       ..._.pick(req.query, [
-        "continent_code",
-        "currency_code",
-        "iso2_code",
-        "iso3_code",
+        "iso_code",
         "iso_numeric_code",
-        "fips_code",
-        "calling_code",
         "common_name",
         "official_name",
-        "endonym",
-        "demonym",
+        "symbol",
       ]),
     } as IQuery;
-    const result: IResult<ICountry> = await Service.getAll(page, size, query);
+    const result: IResult<ICurrency> = await Service.getAll(page, size, query);
 
     if (result.error) return res.status(500).send(result);
     res.send(result);
@@ -38,11 +32,11 @@ export class CountriesController {
     try {
       return res.sendFile(base_dir + "/htmlpages/index.html");
     } catch (error: unknown) {
-      let result: IResult<ICountry> = {
+      let result: IResult<ICurrency> = {
         data: null,
         error: null,
       };
-      result = parseError(error) as IResult<ICountry>;
+      result = parseError(error) as IResult<ICurrency>;
       return res.status(500).send(result);
     }
   }
@@ -57,9 +51,9 @@ export class CountriesController {
       saveFile(file);
 
       //parse the csv file to an object
-      const csvObj: ICountry[] = (await parseCSV(
+      const csvObj: ICurrency[] = (await parseCSV(
         base_dir + `/upload/${file.name}`
-      )) as ICountry[];
+      )) as ICurrency[];
 
       //save to database
       const result = await Service.saveMany(csvObj);
@@ -67,14 +61,14 @@ export class CountriesController {
       if (result.error) return res.status(500).send(result);
       return res.status(200).send(result);
     } catch (error) {
-      let result: IResult<ICountry> = {
+      let result: IResult<ICurrency> = {
         data: null,
         error: null,
       };
-      result = parseError(error) as IResult<ICountry>;
+      result = parseError(error) as IResult<ICurrency>;
       return res.status(500).send(result);
     }
   }
 }
 
-export default new CountriesController();
+export default new CurrenciesController();

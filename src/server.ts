@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import helmet from "helmet";
 import fileUpload from "express-fileupload";
 import * as configuration from "dotenv";
-import { countriesRouter } from "./routes";
+import { countriesRouter, currenciesRouter } from "./routes";
 import MongoDb from "./services/databaseService/MongoDb";
 import { IDatabase } from "./interfaces";
 
@@ -25,6 +25,7 @@ app.use(fileUpload());
 
 // App routes endpoints ///////
 app.use("/api/countries/", countriesRouter);
+app.use("/api/currencies/", currenciesRouter);
 ///////////////////////////////
 
 // Setting up database and server  //

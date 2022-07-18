@@ -1,3 +1,4 @@
 import { CountryModel } from "./CountryModel";
+import { CurrencyModel } from "./CurrencyModel";
 
-export { CountryModel };
+export { CountryModel, CurrencyModel };

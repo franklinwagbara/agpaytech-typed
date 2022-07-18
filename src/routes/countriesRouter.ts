@@ -1,8 +1,5 @@
 import express from "express";
 import { countriesController } from "../controllers";
-import { ICountry, IService } from "../interfaces";
-import { paginateResults } from "../middlewares";
-import { countriesService } from "../services";
 
 // Route constants ///////////////
 const router = express.Router();

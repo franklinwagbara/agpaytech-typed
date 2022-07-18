@@ -1,3 +1,4 @@
 import countriesRouter from "./countriesRouter";
+import currenciesRouter from "./currenciesRouter";
 
-export { countriesRouter };
+export { countriesRouter, currenciesRouter };

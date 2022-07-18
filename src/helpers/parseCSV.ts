@@ -6,7 +6,7 @@ const parseCSV = async (filepath: string) => {
     const data = await csv().fromFile(filepath);
     return data;
   } catch (error) {
-    parseError(error);
+    return parseError(error);
   }
 };
 

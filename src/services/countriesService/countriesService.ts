@@ -26,7 +26,7 @@ export class CountriesService implements IService<ICountry> {
     throw new Error("Method not implemented.");
   }
 
-  saveCountry(data: ICountry): Promise<IResult<ICountry>>{
+  saveOne(data: ICountry): Promise<IResult<ICountry>>{
     const result: IResult<ICountry> = {
       data: null,
       error: null,
@@ -34,7 +34,7 @@ export class CountriesService implements IService<ICountry> {
     return Promise<IResult<ICountry>>.resolve(result);
   }
 
-  saveCountries(data: ICountry[]): Promise<IResult<ICountry>>{
+  saveMany(data: ICountry[]): Promise<IResult<ICountry>>{
     return saveCountries(data, this._Model);
   }
 

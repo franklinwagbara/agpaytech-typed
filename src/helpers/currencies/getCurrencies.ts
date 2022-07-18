@@ -1,16 +1,16 @@
-import { ICountry, IQuery, IResult } from "../../interfaces";
+import { ICurrency, IQuery, IResult } from "../../interfaces";
 import { Model } from "mongoose";
-import {parseError} from "../../helpers";
+import {parseError} from "..";
 import { IPagination } from "../../interfaces/IPagination";
 import _ from "lodash";
 
-const result: IResult<ICountry> = {
+const result: IResult<ICurrency> = {
       data: null,
       error: null,
 };
 
-const getCountries = async (model: Model<ICountry>, page: number, size: number, query: IQuery): Promise<IResult<ICountry>> =>{
-      let countries = null;
+const getCurrencies = async (model: Model<ICurrency>, page: number, size: number, query: IQuery): Promise<IResult<ICurrency>> =>{
+      let currencies = null;
       page = page || 1;
       size = size || 10;
 
@@ -33,9 +33,9 @@ const getCountries = async (model: Model<ICountry>, page: number, size: number, 
                   query[key as keyof IQuery] = new RegExp(query[key as keyof IQuery] as string, "i");
             }
             
-            countries = await model.find(query).exec();
+            currencies = await model.find(query).exec();
 
-            if(endIndex < countries.length){
+            if(endIndex < currencies.length){
                   next.page = page + 1;
                   next.limit = size;
             }
@@ -45,13 +45,12 @@ const getCountries = async (model: Model<ICountry>, page: number, size: number, 
                   previous.limit = size;
             }
             
-            countries = _.slice(countries, startIndex, endIndex);
-            result.data = {next: next, previous: previous, result: countries};
+            currencies = _.slice(currencies, startIndex, endIndex);
+            result.data = {next: next, previous: previous, result: currencies};
             
-            return Promise<IResult<ICountry>>.resolve(result);
+            return Promise<IResult<ICurrency>>.resolve(result);
       } catch (error) {
-            return parseError(error) as IResult<ICountry>;
+            return parseError(error) as IResult<ICurrency>;
       }  
 };
-
-export default getCountries;
+export default getCurrencies;
