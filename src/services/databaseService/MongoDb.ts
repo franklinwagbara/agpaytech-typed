@@ -1,19 +1,24 @@
 import mongoose from "mongoose";
 import { IDatabase, IService, IResult } from "../../interfaces";
 
-export default class MongoDb implements IDatabase<object> {
+export default class MongoDb implements IDatabase {
   private readonly DB_URI: string;
 
-  constructor(DB_URI: string) {
-    this.DB_URI = DB_URI;
+  constructor() {
+    this.DB_URI = process.env.DB_URI as string;
   }
 
-  connect(): Promise<object> {
+  async connect(): Promise<void> {
     console.log("\nConnecting to database...");
-    return mongoose.connect(this.DB_URI);
+    try {
+      mongoose.connect(this.DB_URI);
+      return console.log("Connected to the database successfully.\n");
+    } catch (error: any) {
+      throw new Error(error);
+    }
   }
 
-  disconnect(): Promise<IResult<object>> {
+  async disconnect(): Promise<void> {
     throw new Error("Method not implemented.");
   }
 }

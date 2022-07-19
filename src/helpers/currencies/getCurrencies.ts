@@ -18,11 +18,13 @@ const getCurrencies = async (model: Model<ICurrency>, page: number, size: number
       const endIndex = page * size;
       const next: IPagination = {
             page: null,
-            limit: null
+            limit: null,
+            count: null,
       };
       const previous: IPagination = {
             page: null,
-            limit: null
+            limit: null,
+            count: null,
       };
 
       try {
@@ -38,11 +40,13 @@ const getCurrencies = async (model: Model<ICurrency>, page: number, size: number
             if(endIndex < currencies.length){
                   next.page = page + 1;
                   next.limit = size;
+                  next.count = currencies.length;
             }
 
             if(startIndex > 0){
                   previous.page = page - 1;
                   previous.limit = size;
+                  previous.count = currencies.length;
             }
             
             currencies = _.slice(currencies, startIndex, endIndex);

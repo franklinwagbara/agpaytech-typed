@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Model } from "mongoose";
 import { ICountry } from "../interfaces";
 
 const CountrySchema = new Schema<ICountry>({
@@ -15,5 +15,5 @@ const CountrySchema = new Schema<ICountry>({
   demonym: String,
 });
 
-const CountryModel = model<ICountry>("Country", CountrySchema);
+const CountryModel: Model<ICountry> = model<ICountry>("Country", CountrySchema);
 export { CountryModel };

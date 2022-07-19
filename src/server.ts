@@ -1,47 +1,17 @@
+import "dotenv/config";
 import express, { Express } from "express";
 import helmet from "helmet";
 import fileUpload from "express-fileupload";
-import * as configuration from "dotenv";
 import { countriesRouter, currenciesRouter } from "./routes";
 import MongoDb from "./services/databaseService/MongoDb";
-import { IDatabase } from "./interfaces";
+import { validateEnv } from "./utils";
+import { App } from "./App";
+import { countriesController, currenciesController } from "./controllers";
 
-// App Constants /////////////
-configuration.config();
-const app: Express = express();
-const PORT: string | number = process.env.PORT || 3000;
-const DB_URI: string = process.env.DB_URI || "";
-//////////////////////////////
+//Validate envs ////////////////
+validateEnv();
 
-// Middlewares ///////////////
-app.use(express.json());
-app.use(
-  helmet({
-    contentSecurityPolicy: true,
-  })
+const _app = new App(
+  [countriesController, currenciesController],
+  new MongoDb()
 );
-app.use(fileUpload());
-///////////////////////////////
-
-// App routes endpoints ///////
-app.use("/api/countries/", countriesRouter);
-app.use("/api/currencies/", currenciesRouter);
-///////////////////////////////
-
-// Setting up database and server  //
-const database: IDatabase<object> = new MongoDb(DB_URI);
-database
-  .connect()
-  .then(() => {
-    console.log("Connected to database successfully.\n");
-    console.log("Initializing server...");
-
-    app.listen(PORT, () =>
-      console.log(`Initialization complete. \nListening on port ${PORT}`)
-    );
-  })
-  .catch((error) =>
-    console.error(
-      `FATAL ERROR: Unable to connect to database or server.\nEXCEPTION DUMP: ${error?.message}`
-    )
-  );

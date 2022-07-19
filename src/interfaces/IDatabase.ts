@@ -1,7 +1,7 @@
 import { IResult } from "./IResult";
 import { IService } from "./IService";
 
-export interface IDatabase<T> {
-  connect(): Promise<T>;
-  disconnect(): Promise<T>;
+export interface IDatabase {
+  connect(): Promise<void>;
+  disconnect(): Promise<void>;
 }

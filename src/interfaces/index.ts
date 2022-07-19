@@ -5,6 +5,7 @@ import { ICountry } from "./ICountry";
 import { ICurrency } from "./ICurrency";
 import { IPagination } from "./Pagination";
 import { IQuery } from "./IQuery";
+import { IController } from "./IController";
 
 export {
   IService,
@@ -14,4 +15,5 @@ export {
   ICurrency,
   IPagination,
   IQuery,
+  IController,
 };
