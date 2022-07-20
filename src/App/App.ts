@@ -2,6 +2,7 @@ import express from "express";
 import fileUpload from "express-fileupload";
 import helmet from "helmet";
 import path from "path";
+import { base_dir } from "../../base_dir";
 import { IController, ICountry, ICurrency, IDatabase } from "../interfaces";
 
 export class App {
@@ -23,7 +24,7 @@ export class App {
 
   private initializeMiddlewares() {
     console.log("\nInitializing middlewares...");
-    this.app.use(express.static(path.resolve(__dirname, "./build/")));
+    this.app.use(express.static(path.resolve(base_dir, "/build/")));
     this.app.use(express.json());
     this.app.use(
       helmet({
