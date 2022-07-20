@@ -1,24 +1,25 @@
+import "dotenv/config";
 import mongoose from "mongoose";
 import { IDatabase, IService, IResult } from "../../interfaces";
 
 export default class MongoDb implements IDatabase {
-  private readonly DB_URI: string;
+  public readonly DB_URI: string;
 
   constructor() {
-    this.DB_URI = process.env.DB_URI as string;
+    this.DB_URI = process.env.DB_URI || "";
   }
 
   async connect(): Promise<void> {
     console.log("\nConnecting to database...");
     try {
-      mongoose.connect(this.DB_URI);
-      return console.log("Connected to the database successfully.\n");
+      await mongoose.connect(this.DB_URI);
+      console.log("Connected to the database successfully.\n");
     } catch (error: any) {
-      throw new Error(error);
+      console.error(error);
     }
   }
 
   async disconnect(): Promise<void> {
-    throw new Error("Method not implemented.");
+    await mongoose.disconnect();
   }
 }

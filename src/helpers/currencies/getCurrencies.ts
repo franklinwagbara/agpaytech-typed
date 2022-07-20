@@ -1,6 +1,6 @@
 import { ICurrency, IQuery, IResult } from "../../interfaces";
 import { Model } from "mongoose";
-import {parseError} from "..";
+import { parseError } from "../../utils";
 import { IPagination } from "../../interfaces/IPagination";
 import _ from "lodash";
 
@@ -35,7 +35,7 @@ const getCurrencies = async (model: Model<ICurrency>, page: number, size: number
                   query[key as keyof IQuery] = new RegExp(query[key as keyof IQuery] as string, "i");
             }
             
-            currencies = await model.find(query).exec();
+            currencies = await model.find(query);
 
             if(endIndex < currencies.length){
                   next.page = page + 1;

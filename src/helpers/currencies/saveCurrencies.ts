@@ -1,6 +1,6 @@
 import { ICurrency, IResult } from "../../interfaces";
 import { Model } from "mongoose";
-import { parseError } from "..";
+import { parseError } from "../../utils";
 
 const result: IResult<ICurrency> = {
   data: null,

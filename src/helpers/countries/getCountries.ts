@@ -1,6 +1,6 @@
 import { ICountry, IQuery, IResult } from "../../interfaces";
 import { Model } from "mongoose";
-import {parseError} from "../../helpers";
+import { parseError } from "../../utils";
 import { IPagination } from "../../interfaces/IPagination";
 import _ from "lodash";
 
@@ -31,11 +31,10 @@ const getCountries = async (model: Model<ICountry>, page: number, size: number, 
             if(page <= 0 || size <= 0)
                   throw new Error("Wrong query parameter(s) value(s)");
                   
-            for(let key in query){
+            for(let key in query)
                   query[key as keyof IQuery] = new RegExp(query[key as keyof IQuery] as string, "i");
-            }
             
-            countries = await model.find(query).exec();
+            countries = await model.find(query);
 
             if(endIndex < countries.length){
                   next.page = page + 1;

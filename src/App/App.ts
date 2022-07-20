@@ -43,7 +43,7 @@ export class App {
   private connectToDatabase() {
     try {
       this.database.connect();
-    } catch (error) {
+    } catch (error: any) {
       console.error(
         `FATAL ERROR: Unable to connect to database or server.\nEXCEPTION DUMP: ${error}`
       );

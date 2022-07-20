@@ -3,29 +3,29 @@ import express from "express";
 import {
   IService,
   IResult,
-  ICurrency,
+  ICountry,
   IQuery,
   IController,
-} from "../interfaces";
-import { currenciesService } from "../services";
-import { base_dir } from "../../base_dir";
-import { parseCSV, parseError, saveFile } from "../helpers";
+} from "../../interfaces";
+import { countriesService } from "../../services";
+import { base_dir } from "../../../base_dir";
+import { parseCSV, parseError, saveFile } from "../../utils";
 import fileUpload from "express-fileupload";
 import _ from "lodash";
-import { CurrencyModel } from "../models";
+import { CountryModel } from "../../models";
 import { Model } from "mongoose";
 
-const Service: IService<ICurrency> = currenciesService;
-
-export class CurrenciesController implements IController<ICurrency> {
+export class CountriesController implements IController<ICountry> {
   path: string;
   router: express.Router;
-  model: Model<ICurrency>;
+  model: Model<ICountry>;
+  Service: IService<ICountry>;
 
-  constructor(path: string, model: Model<ICurrency>) {
+  constructor(path: string, model: Model<ICountry>) {
     this.path = path;
     this.model = model;
     this.router = express.Router();
+    this.Service = countriesService;
 
     this.initializeRoutes(); //Initialize routes
   }
@@ -37,40 +37,50 @@ export class CurrenciesController implements IController<ICurrency> {
     //this.router.get(`${this.path}/:id`,);
   }
 
-  async getAll(req: Request, res: Response): Promise<Response> {
+  getAll = async (req: Request, res: Response): Promise<Response> => {
     //todo: implement validation
     const page: number | undefined = parseInt(req.query.page as string);
     const size: number | undefined = parseInt(req.query.size as string);
     const query: IQuery = {
       ..._.pick(req.query, [
-        "iso_code",
+        "continent_code",
+        "currency_code",
+        "iso2_code",
+        "iso3_code",
         "iso_numeric_code",
+        "fips_code",
+        "calling_code",
         "common_name",
         "official_name",
-        "symbol",
+        "endonym",
+        "demonym",
       ]),
     } as IQuery;
-    const result: IResult<ICurrency> = await Service.getAll(page, size, query);
+    const result: IResult<ICountry> = await this.Service.getAll(
+      page,
+      size,
+      query
+    );
 
     if (result.error) return res.status(500).send(result);
     return res.send(result);
-  }
+  };
 
-  getUploadPage(req: Request, res: Response): Promise<Response> | void {
+  getUploadPage = (req: Request, res: Response): Promise<Response> | void => {
     try {
-      return res.sendFile(base_dir + "/htmlpages/index.html");
+      return res.sendFile(base_dir + "/src/htmlpages/index.html");
     } catch (error: unknown) {
-      let result: IResult<ICurrency> = {
+      let result: IResult<ICountry> = {
         data: null,
         error: null,
       };
-      result = parseError(error) as IResult<ICurrency>;
+      result = parseError(error) as IResult<ICountry>;
       res.status(500).send(result);
       return;
     }
-  }
+  };
 
-  async postUploadCSV(req: Request, res: Response): Promise<Response> {
+  postUploadCSV = async (req: Request, res: Response): Promise<Response> => {
     try {
       if (req.files === undefined) throw new Error("File was not attached.");
       const file: fileUpload.UploadedFile = req.files
@@ -80,24 +90,24 @@ export class CurrenciesController implements IController<ICurrency> {
       saveFile(file);
 
       //parse the csv file to an object
-      const csvObj: ICurrency[] = (await parseCSV(
+      const csvObj: ICountry[] = (await parseCSV(
         base_dir + `/upload/${file.name}`
-      )) as ICurrency[];
+      )) as ICountry[];
 
       //save to database
-      const result = await Service.saveMany(csvObj);
+      const result = await this.Service.saveMany(csvObj);
 
       if (result.error) return res.status(500).send(result);
       return res.status(200).send(result);
     } catch (error) {
-      let result: IResult<ICurrency> = {
+      let result: IResult<ICountry> = {
         data: null,
         error: null,
       };
-      result = parseError(error) as IResult<ICurrency>;
+      result = parseError(error) as IResult<ICountry>;
       return res.status(500).send(result);
     }
-  }
+  };
 }
 
-export default new CurrenciesController("/currencies", CurrencyModel);
+export default new CountriesController("/countries", CountryModel);

@@ -1,6 +1,6 @@
 import { ICountry, IResult } from "../../interfaces";
 import { Model } from "mongoose";
-import { parseError } from "../../helpers";
+import { parseError } from "../../utils";
 
 const result: IResult<ICountry> = {
   data: null,
