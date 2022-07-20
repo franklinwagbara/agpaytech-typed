@@ -24,9 +24,7 @@ export class App {
 
   private initializeMiddlewares() {
     console.log("\nInitializing middlewares...");
-    this.app.use(
-      express.static(path.resolve(base_dir, "build", "src", "htmlpages"))
-    );
+    this.app.use(express.static(path.resolve(base_dir, "public")));
     this.app.use(express.json());
     this.app.use(
       helmet({
