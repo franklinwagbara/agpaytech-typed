@@ -35,7 +35,6 @@ export class App {
   private initializeControllers(controllers: IController<any>[]) {
     console.log("\nInitializing controllers...");
     controllers.forEach((controller) => {
-      this.app.use("/", (req, res) => res.send("Hello world!"));
       this.app.use("/api/", controller.router);
     });
     console.log("Controllers initialization complete.\n");
