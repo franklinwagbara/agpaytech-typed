@@ -1,0 +1,46 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      body div {
+        display: flex;
+        justify-content: center;
+      }
+      .form {
+        display: flex;
+        flex-direction: column;
+        margin-top: 2rem;
+      }
+
+      .form input[type="submit"] {
+        margin-top: 1rem;
+        background-color: rgba(10, 138, 33, 0.469);
+        border: 2px solid rgba(1, 125, 63, 0.562);
+        height: 2.5rem;
+        font-size: 1.3rem;
+        cursor: pointer;
+      }
+
+      .form input[type="submit"]:hover {
+        background-color: rgba(10, 138, 33, 0.743);
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <form
+        class="form"
+        action="uploadcsv"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <input type="file" name="file" />
+        <input type="submit" value="upload" />
+      </form>
+    </div>
+  </body>
+</html>

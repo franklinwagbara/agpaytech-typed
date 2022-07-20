@@ -14,6 +14,7 @@ import fileUpload from "express-fileupload";
 import _ from "lodash";
 import { CountryModel } from "../../models";
 import { Model } from "mongoose";
+import * as _path from "path";
 
 export class CountriesController implements IController<ICountry> {
   path: string;
@@ -68,7 +69,8 @@ export class CountriesController implements IController<ICountry> {
 
   getUploadPage = (req: Request, res: Response): Promise<Response> | void => {
     try {
-      return res.sendFile(base_dir + "/src/htmlpages/index.html");
+      const uploadPath = _path.join(base_dir, "public", "index.html");
+      return res.sendFile(uploadPath);
     } catch (error: unknown) {
       let result: IResult<ICountry> = {
         data: null,
