@@ -1,6 +1,7 @@
 import express from "express";
 import fileUpload from "express-fileupload";
 import helmet from "helmet";
+import path from "path";
 import { IController, ICountry, ICurrency, IDatabase } from "../interfaces";
 
 export class App {
@@ -22,6 +23,7 @@ export class App {
 
   private initializeMiddlewares() {
     console.log("\nInitializing middlewares...");
+    app.use(express.static(path.resolve(__dirname, "./build/")));
     this.app.use(express.json());
     this.app.use(
       helmet({
