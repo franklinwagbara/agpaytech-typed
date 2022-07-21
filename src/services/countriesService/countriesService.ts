@@ -23,25 +23,6 @@ export class CountriesService implements IService<ICountry> {
     return saveCountries(data, this._Model);
   }
 
-  // getSingle(id: number): Promise<IResult<ICountry>> {
-  //   const result: IResult<ICountry> = {
-  //     data: null,
-  //     error: null,
-  //   };
-
-  //   return Promise<IResult<ICountry>>.resolve(result);
-  // }
-  // saveOne(data: ICountry): Promise<IResult<ICountry>>{
-  //   const result: IResult<ICountry> = {
-  //     data: null,
-  //     error: null,
-  //   };
-  //   return Promise<IResult<ICountry>>.resolve(result);
-  // }
-
-  // update(data: ICountry): Promise<IResult<ICountry>> {
-  //   throw new Error("Method not implemented.");
-  // }
   // delete(id: number): Promise<IResult<ICountry>> {
   //   throw new Error("Method not implemented.");
   // }
