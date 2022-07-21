@@ -6,6 +6,7 @@ import { validateCountry } from "../../validation";
 const result: IResult<ICountry> = {
   data: null,
   error: null,
+  status: 200
 };
 
 export const saveCountries = async function (
@@ -22,7 +23,7 @@ export const saveCountries = async function (
     result.data = {success: "ok"};
     return Promise<IResult<ICountry>>.resolve(result);
   } catch (error) {
-    return parseError(error) as IResult<ICountry>;
+    return parseError(error, 500) as IResult<ICountry>;
   }
 };
 

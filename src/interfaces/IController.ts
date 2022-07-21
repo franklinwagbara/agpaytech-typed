@@ -8,6 +8,7 @@ export interface IController<T> {
   router: express.Router;
   initializeRoutes(): void;
   getAll(req: Request, res: Response): Promise<Response>;
+  delete(req: Request, res: Response): Promise<Response>;
   getUploadPage(req: Request, res: Response): Promise<Response> | void;
   postUploadCSV(req: Request, res: Response): Promise<Response>;
 }

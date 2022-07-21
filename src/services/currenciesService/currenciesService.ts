@@ -2,7 +2,7 @@ import { Model } from "mongoose";
 import { ICurrency, IQuery } from "../../interfaces";
 import { IService, IResult } from "../../interfaces";
 import { CurrencyModel } from "../../models";
-import { getCurrencies, saveCurrencies } from "../../helpers";
+import { getCurrencies, saveCurrencies, deleteCurrencies } from "../../helpers";
 
 export class CurrencyService implements IService<ICurrency> {
   private readonly _Model: Model<ICurrency>;
@@ -23,9 +23,9 @@ export class CurrencyService implements IService<ICurrency> {
     return saveCurrencies(data, this._Model);
   };
 
-  // delete(id: number): Promise<IResult<ICurrency>> {
-  //   throw new Error("Method not implemented.");
-  // }
+  delete(query: IQuery): Promise<IResult<ICurrency>> {
+    return deleteCurrencies(this._Model, query);
+  }
 }
 
 export default new CurrencyService(CurrencyModel);

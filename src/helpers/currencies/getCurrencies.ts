@@ -7,6 +7,7 @@ import _ from "lodash";
 const result: IResult<ICurrency> = {
       data: null,
       error: null,
+      status: 200
 };
 
 const getCurrencies = async (model: Model<ICurrency>, page: number, size: number, query: IQuery): Promise<IResult<ICurrency>> =>{
@@ -54,7 +55,7 @@ const getCurrencies = async (model: Model<ICurrency>, page: number, size: number
             
             return Promise<IResult<ICurrency>>.resolve(result);
       } catch (error) {
-            return parseError(error) as IResult<ICurrency>;
+            return parseError(error, 500) as IResult<ICurrency>;
       }  
 };
 export default getCurrencies;

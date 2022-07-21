@@ -7,6 +7,7 @@ import _ from "lodash";
 const result: IResult<ICountry> = {
       data: null,
       error: null,
+      status: 200
 };
 
 const getCountries = async (model: Model<ICountry>, page: number, size: number, query: IQuery): Promise<IResult<ICountry>> =>{
@@ -53,7 +54,7 @@ const getCountries = async (model: Model<ICountry>, page: number, size: number, 
             
             return Promise<IResult<ICountry>>.resolve(result);
       } catch (error) {
-            return parseError(error) as IResult<ICountry>;
+            return parseError(error, 500) as IResult<ICountry>;
       }  
 };
 

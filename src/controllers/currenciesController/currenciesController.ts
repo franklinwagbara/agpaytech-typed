@@ -7,7 +7,6 @@ import {
   IQuery,
   IController,
 } from "../../interfaces";
-//import { currenciesService } from "../../services";
 import { base_dir } from "../../../base_dir";
 import { parseCSV, parseError, saveFile } from "../../utils";
 import fileUpload from "express-fileupload";
@@ -35,11 +34,10 @@ export class CurrenciesController implements IController<ICurrency> {
     this.router.get(this.path, this.getAll);
     this.router.get(`${this.path}/uploadpage`, this.getUploadPage);
     this.router.post(`${this.path}/uploadcsv`, this.postUploadCSV);
-    //this.router.get(`${this.path}/:id`,);
+    this.router.delete(`${this.path}/`, this.delete);
   }
 
   getAll = async (req: Request, res: Response): Promise<Response> => {
-    //todo: implement validation
     const page: number | undefined = parseInt(req.query.page as string);
     const size: number | undefined = parseInt(req.query.size as string);
     const query: IQuery = {
@@ -68,8 +66,9 @@ export class CurrenciesController implements IController<ICurrency> {
       let result: IResult<ICurrency> = {
         data: null,
         error: null,
+        status: 500,
       };
-      result = parseError(error) as IResult<ICurrency>;
+      result = parseError(error, 500) as IResult<ICurrency>;
       res.status(500).send(result);
       return;
     }
@@ -98,10 +97,27 @@ export class CurrenciesController implements IController<ICurrency> {
       let result: IResult<ICurrency> = {
         data: null,
         error: null,
+        status: 500,
       };
-      result = parseError(error) as IResult<ICurrency>;
+      result = parseError(error, 500) as IResult<ICurrency>;
       return res.status(500).send(result);
     }
+  };
+
+  delete = async (req: Request, res: Response): Promise<Response> => {
+    const query: IQuery = {
+      ..._.pick(req.query, [
+        "iso_code",
+        "iso_numeric_code",
+        "common_name",
+        "official_name",
+        "symbol",
+      ]),
+    } as IQuery;
+    const result: IResult<ICurrency> = await this.Service.delete(query);
+
+    if (result.error) return res.status(result.status).send(result);
+    return res.send(result);
   };
 }
 

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for helpers/countries/saveCountries.ts</title>
+    <title>Code coverage report for helpers/countries/deleteCountries.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">helpers/countries</a> saveCountries.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">helpers/countries</a> deleteCountries.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -93,29 +93,35 @@
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -123,36 +129,39 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ICountry, IResult } from "../../interfaces";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ICountry, IQuery, IResult } from "../../interfaces";
 import { Model } from "mongoose";
 import { parseError } from "../../utils";
-import { validateCountry } from "../../validation";
+import _ from "lodash";
 &nbsp;
 const result: IResult&lt;ICountry&gt; = {
-  data: null,
-  error: null,
-  status: 200
+      data: null,
+      error: null,
+      status: 200,
 };
 &nbsp;
-export const saveCountries = async function (
-  countries: ICountry[],
-  model: Model&lt;ICountry&gt;
-): Promise&lt;IResult&lt;ICountry&gt;&gt; {
-  try {
-    for(let country of countries){
-      const {error} = validateCountry(country);
-      if(error) throw error;
-    }
+const deleteCountries = async (model: Model&lt;ICountry&gt;, query: IQuery): Promise&lt;IResult&lt;ICountry&gt;&gt; =&gt;{
+      let countries = null;
+      
+      try {
 &nbsp;
-    await model.insertMany(countries);
-    result.data = {success: "ok"};
-    return Promise&lt;IResult&lt;ICountry&gt;&gt;.resolve(result);
-  } catch (error) {
-    return parseError(error, 500) as IResult&lt;ICountry&gt;;
-  }
+            for(let key in query)
+                  query[key as keyof IQuery] = new RegExp(query[key as keyof IQuery] as string, "i");
+            
+            countries = await model.find(query);
+&nbsp;
+            if(!countries) return parseError("Does not exist", 404) as IResult&lt;ICountry&gt;;
+            
+            await model.deleteMany(query);
+            result.data = {success: "ok"};
+            
+            return Promise&lt;IResult&lt;ICountry&gt;&gt;.resolve(result);
+      } catch (error) {
+            return parseError(error, 500) as IResult&lt;ICountry&gt;;
+      }  
 };
 &nbsp;
-export default saveCountries;
+export default deleteCountries;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

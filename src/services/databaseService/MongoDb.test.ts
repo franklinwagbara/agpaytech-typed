@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const db = new MongoDb();
 
 beforeAll(() => {
-  //(console as any).log = jest.fn().mockReturnValue(1);
+  (console as any).log = jest.fn().mockReturnValue(1);
   (console as any).error = jest.fn().mockReturnValue(1);
 });
 describe("MongoDb", () => {

@@ -6,6 +6,7 @@ import { validateCurrency } from "../../validation";
 const result: IResult<ICurrency> = {
   data: null,
   error: null,
+  status: 200
 };
 
 export const saveCurrencies = async function (
@@ -22,7 +23,7 @@ export const saveCurrencies = async function (
     result.data = {success: "ok"};
     return Promise<IResult<ICurrency>>.resolve(result);
   } catch (error) {
-    return parseError(error) as IResult<ICurrency>;
+    return parseError(error, 500) as IResult<ICurrency>;
   }
 };
 

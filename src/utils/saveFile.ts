@@ -11,7 +11,7 @@ const saveFile = async function (file: fileUpload.UploadedFile) {
     await file.mv(uploadPath + file.name);
   } catch (error) {
     console.error(error);
-    return parseError(error);
+    return parseError(error, 500);
   }
 };
 

@@ -35,11 +35,10 @@ export class CountriesController implements IController<ICountry> {
     this.router.get(this.path, this.getAll);
     this.router.get(`${this.path}/uploadpage`, this.getUploadPage);
     this.router.post(`${this.path}/uploadcsv`, this.postUploadCSV);
-    //this.router.get(`${this.path}/:id`,);
+    this.router.delete(`${this.path}/`, this.delete);
   }
 
   getAll = async (req: Request, res: Response): Promise<Response> => {
-    //todo: implement validation
     const page: number | undefined = parseInt(req.query.page as string);
     const size: number | undefined = parseInt(req.query.size as string);
     const query: IQuery = {
@@ -63,7 +62,7 @@ export class CountriesController implements IController<ICountry> {
       query
     );
 
-    if (result.error) return res.status(500).send(result);
+    if (result.error) return res.status(result.status).send(result);
     return res.send(result);
   };
 
@@ -76,9 +75,10 @@ export class CountriesController implements IController<ICountry> {
       let result: IResult<ICountry> = {
         data: null,
         error: null,
+        status: 500,
       };
-      result = parseError(error) as IResult<ICountry>;
-      res.status(500).send(result);
+      result = parseError(error, 500) as IResult<ICountry>;
+      res.status(result.status).send(result);
       return;
     }
   };
@@ -106,10 +106,33 @@ export class CountriesController implements IController<ICountry> {
       let result: IResult<ICountry> = {
         data: null,
         error: null,
+        status: 500,
       };
-      result = parseError(error) as IResult<ICountry>;
+      result = parseError(error, 500) as IResult<ICountry>;
       return res.status(500).send(result);
     }
+  };
+
+  delete = async (req: Request, res: Response): Promise<Response> => {
+    const query: IQuery = {
+      ..._.pick(req.query, [
+        "continent_code",
+        "currency_code",
+        "iso2_code",
+        "iso3_code",
+        "iso_numeric_code",
+        "fips_code",
+        "calling_code",
+        "common_name",
+        "official_name",
+        "endonym",
+        "demonym",
+      ]),
+    } as IQuery;
+    const result: IResult<ICountry> = await this.Service.delete(query);
+
+    if (result.error) return res.status(result.status).send(result);
+    return res.send(result);
   };
 }
 
