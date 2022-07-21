@@ -68,7 +68,7 @@ export class CountriesController implements IController<ICountry> {
 
   getUploadPage = (req: Request, res: Response): Promise<Response> | void => {
     try {
-      const uploadPath = _path.join("../public", "public", "index.html");
+      const uploadPath = _path.join("/public", "index.html");
       console.log("upload path", uploadPath);
       return res.sendFile(uploadPath);
     } catch (error: unknown) {

@@ -19,7 +19,7 @@ This is a backend api for countries and currencies search. [Live Demo](https://s
 
 - ### Countries Endpoint
 
-  -To upload csv file containing list of countries use POST http://localhost:<PORTNUMBER>/api/countries/uploadcsv --> via API platform like Postman or
+  - To upload csv file containing list of countries use POST http://localhost:<PORTNUMBER>/api/countries/uploadcsv --> via API platform like Postman or
 
   - To upload csv through the a web brower use the url: http://localhost:<PORTNUMBER>/api/countries/uploadpage
   - To get the list of countries use GET http://localhost:PORTNUMBER/api/countries --> Returns a paginated result
